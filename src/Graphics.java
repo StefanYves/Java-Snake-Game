@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 
 public class Graphics extends JPanel implements ActionListener {
 
+    long startTime;
     static final int WIDTH = 600;
     static final int HEIGHT = 600;
     static final int TICK_SIZE = 25;
@@ -64,6 +65,8 @@ public class Graphics extends JPanel implements ActionListener {
     }
 
     protected void start() {
+        startTime = System.currentTimeMillis();
+
         snakePosX = new int[BOARD_SIZE];
         snakePosY = new int [BOARD_SIZE];
         snakeLength = 5;
@@ -72,6 +75,7 @@ public class Graphics extends JPanel implements ActionListener {
         isMoving = true;
         spawnFood();
         timer.start();
+
     }
 
     @Override
@@ -91,8 +95,10 @@ public class Graphics extends JPanel implements ActionListener {
             g.setColor(Color.BLACK);
             g.setFont(font);
             g.drawString(scoreText, (WIDTH - getFontMetrics(g.getFont()).stringWidth(scoreText)) / 2, HEIGHT / 2);
+            ScoreManager.saveScore(foodEaten, System.currentTimeMillis() - startTime);
         }
-    }
+        }
+
 
     protected void move() {
         for(int i = snakeLength; i > 0; i--){

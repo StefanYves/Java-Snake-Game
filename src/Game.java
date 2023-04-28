@@ -2,7 +2,9 @@ import javax.swing.*;
 
 public class Game extends JFrame {
 
+
     public Game() {
+
         this.add(new Graphics());
         this.setTitle("Snake Game");
         this.pack();
@@ -10,5 +12,6 @@ public class Game extends JFrame {
         this.setResizable(false);
         this.setVisible(true);
         this.setLocationRelativeTo(null);
+
     }
 }
