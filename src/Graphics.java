@@ -24,6 +24,9 @@ public class Graphics extends JPanel implements ActionListener {
     char direction = 'R';
     boolean isMoving = false;
     final Timer timer = new Timer(100, this);
+    JButton rulesButton = new JButton("Rules");
+    JButton javafxButton = new JButton("JavaFX");
+
 
     public Graphics(){
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -60,12 +63,13 @@ public class Graphics extends JPanel implements ActionListener {
                 }
             }
         });
-
         start();
     }
 
     protected void start() {
+
         startTime = System.currentTimeMillis();
+
 
         snakePosX = new int[BOARD_SIZE];
         snakePosY = new int [BOARD_SIZE];
@@ -76,7 +80,10 @@ public class Graphics extends JPanel implements ActionListener {
         spawnFood();
         timer.start();
 
+        rulesButton.setVisible(false);
+        javafxButton.setVisible(false);
     }
+
 
     @Override
     protected void paintComponent(java.awt.Graphics g){
@@ -90,14 +97,57 @@ public class Graphics extends JPanel implements ActionListener {
             for(int i = 0; i < snakeLength; i++){
                 g.fillRect(snakePosX[i], snakePosY[i], TICK_SIZE, TICK_SIZE);
             }
-        }else {
+        } else {
             String scoreText = String.format("The End... Score: %d... Press any key to play again!",foodEaten);
             g.setColor(Color.BLACK);
             g.setFont(font);
             g.drawString(scoreText, (WIDTH - getFontMetrics(g.getFont()).stringWidth(scoreText)) / 2, HEIGHT / 2);
             ScoreManager.saveScore(foodEaten, System.currentTimeMillis() - startTime);
+
+                rulesButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JFrame rulesFrame = new JFrame("Rules");
+                        rulesFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        JTextArea rulesText = new JTextArea("Reguli pentru jocul Snake:\n\n1. " +
+                                "Folosiți tastele săgeți pentru a muta șarpele.\n2. " +
+                                "Mâncați mâncarea pentru a obține puncte si a creste in lungime.\n3. " +
+                                "Evitați să intrati în pereți sau în propria coadă");
+                        rulesText.setEditable(false);
+                        rulesText.setFont(font);
+                        rulesFrame.add(rulesText);
+                        rulesFrame.pack();
+                        rulesFrame.setVisible(true);
+                    }
+                });
+
+                javafxButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JFrame javafxFrame = new JFrame("JavaFX & Java Swing");
+                        javafxFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        JTextArea javafxText = new JTextArea("JavaFX și Java Swing sunt biblioteci pentru crearea de interfețe cu utilizatorul în Java. . \n" +
+                                "JavaFX este cea mai nouă dintre cele două biblioteci și este recomandată pentru proiecte noi, \n" +
+                                "în timp ce Java Swing este încă utilizat pe scară largă în aplicațiile vechi.");
+                        javafxText.setEditable(false);
+                        javafxText.setFont(font);
+                        javafxFrame.add(javafxText);
+                        javafxFrame.pack();
+                        javafxFrame.setVisible(true);
+                    }
+                });
+
+
+
+
+            this.add(rulesButton);
+            this.add(javafxButton);
+
+
+            rulesButton.setVisible(true);
+            javafxButton.setVisible(true);
         }
-        }
+    }
 
 
     protected void move() {
